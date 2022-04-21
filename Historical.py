@@ -26,7 +26,7 @@ class TestApp(EWrapper, EClient):
 
   dftemp= pd.DataFrame({'Date': ["".join([bar.date.split()[0][0:4],'/',bar.date.split()[0][4:6],"/",bar.date.split()[0][6:8]])],'Hour':[hour],'Open': [bar.open],'Close': [bar.close], 'High': [bar.high], 'Low':[bar.low], 'Volume':[bar.volume]})
   self.df=pd.concat([self.df, dftemp],axis=0)
-  self.df.to_csv('SPXU trades.csv',index=False, sep=';')
+  self.df.to_csv('SPXU trades.csv',index=False, sep=',')
   print(self.df)
 
 def defineContract(symbol, secType, exchange,currency='USD'):
