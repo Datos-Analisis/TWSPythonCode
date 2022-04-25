@@ -265,6 +265,8 @@ def main():
 
 if __name__ == "__main__":
  main()
+
+
  today =  date.today()
  d1 = today.strftime("%d-%m-%Y")
  archivo = f"{directorio}/SPXU.csv"
