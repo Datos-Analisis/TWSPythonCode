@@ -1,4 +1,5 @@
 
+
 from ibapi.client import EClient
 from ibapi.wrapper import EWrapper
 from ibapi.contract import Contract
@@ -11,6 +12,8 @@ class TestApp(EWrapper, EClient):
   EClient.__init__(self, self)
   encabezado = ['Date','Hour', 'Open', 'Close', 'High', 'Low', 'Volume']
   self.df = pd.DataFrame(columns=encabezado)
+
+
 
  def error(self, reqId, errorCode, errorString):
   print("Error: ", reqId, " ", errorCode, " ", errorString)
@@ -25,9 +28,9 @@ class TestApp(EWrapper, EClient):
    hourNum = hourNum+1
    hour = "".join([str(hourNum), bar.date.split()[1][2:8]])
 
-  dftemp= pd.DataFrame({'Date': ["".join([bar.date.split()[0][0:4],'/',bar.date.split()[0][4:6],"/",bar.date.split()[0][6:8]])],'Hour':[hour],'Open': [bar.open],'Close': [bar.close], 'High': [bar.high], 'Low':[bar.low], 'Volume':[bar.volume]})
+  dftemp= pd.DataFrame({'Date': ["".join([bar.date.split()[0][0:4],'/',bar.date.split()[0][4:6],"/",bar.date.split()[0][6:8]])],'Hour':[hour],'Open': [bar.open],'Close': [bar.close], 'High': [bar.high], 'Low':[bar.low], 'Volume':[bar.volume*100]})
   self.df=pd.concat([self.df, dftemp],axis=0)
-  self.df.to_csv('SPXU.csv',index=False, sep=',')
+  self.df.to_csv(f'VOO.csv',index=False, sep=',')
   print(self.df)
 
 def defineContract(symbol, secType, exchange,currency='USD'):
@@ -50,7 +53,7 @@ def main():
  #contract.exchange = "IDEALPRO"
  #contract.currency = "USD"
 
- contract.symbol = 'SPXU'
+ contract.symbol = 'VOO'
  contract.secType = 'STK'
  contract.exchange = 'SMART'
  contract.currency = 'USD'
@@ -58,11 +61,9 @@ def main():
 
  #app.reqHistoricalData(1, contract, "", "1 D", "1 min", "MIDPOINT", 0, 1, False,[])
  #app.reqHistoricalData(1, contract, "", "1 D", "1 min", "ADJUSTED_LAST", 1, 1, False,[])
- app.reqHistoricalData(1, contract, "", "2 D", "1 min", "TRADES", 1, 1, False, [])
+ app.reqHistoricalData(1, contract, "", "5 D", "1 min", "TRADES", 1, 1, False, [])
 
  app.run()
 
 if __name__ == "__main__":
  main()
-
-

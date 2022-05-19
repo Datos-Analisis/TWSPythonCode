@@ -27,7 +27,7 @@ class TestApp(EWrapper, EClient):
 
   dftemp= pd.DataFrame({'Date': ["".join([bar.date.split()[0][0:4],'/',bar.date.split()[0][4:6],"/",bar.date.split()[0][6:8]])],'Hour':[hour],'Open': [bar.open],'Close': [bar.close], 'High': [bar.high], 'Low':[bar.low], 'Volume':[bar.volume]})
   self.df=pd.concat([self.df, dftemp],axis=0)
-  self.df.to_csv('SPXU.csv',index=False, sep=',')
+  self.df.to_csv('XLB.csv',index=False, sep=',')
   print(self.df)
 
 def defineContract(symbol, secType, exchange,currency='USD'):
@@ -50,7 +50,7 @@ def main():
  #contract.exchange = "IDEALPRO"
  #contract.currency = "USD"
 
- contract.symbol = 'SPXU'
+ contract.symbol = 'XLB'
  contract.secType = 'STK'
  contract.exchange = 'SMART'
  contract.currency = 'USD'
@@ -58,7 +58,7 @@ def main():
 
  #app.reqHistoricalData(1, contract, "", "1 D", "1 min", "MIDPOINT", 0, 1, False,[])
  #app.reqHistoricalData(1, contract, "", "1 D", "1 min", "ADJUSTED_LAST", 1, 1, False,[])
- app.reqHistoricalData(1, contract, "", "2 D", "1 min", "TRADES", 1, 1, False, [])
+ app.reqHistoricalData(1, contract, "", "6 D", "1 min", "TRADES", 1, 1, False, [])
 
  app.run()
 
