@@ -12,6 +12,7 @@ class TestApp(EWrapper, EClient):
   encabezado = ['Date','Hour', 'Open', 'Close', 'High', 'Low', 'Volume']
   self.df = pd.DataFrame(columns=encabezado)
 
+
  def error(self, reqId, errorCode, errorString):
   print("Error: ", reqId, " ", errorCode, " ", errorString)
 
@@ -27,7 +28,7 @@ class TestApp(EWrapper, EClient):
 
   dftemp= pd.DataFrame({'Date': ["".join([bar.date.split()[0][0:4],'/',bar.date.split()[0][4:6],"/",bar.date.split()[0][6:8]])],'Hour':[hour],'Open': [bar.open],'Close': [bar.close], 'High': [bar.high], 'Low':[bar.low], 'Volume':[bar.volume]})
   self.df=pd.concat([self.df, dftemp],axis=0)
-  self.df.to_csv('XLB.csv',index=False, sep=',')
+  self.df.to_csv('try.csv',index=False, sep=',')
   print(self.df)
 
 def defineContract(symbol, secType, exchange,currency='USD'):
@@ -43,24 +44,26 @@ def main():
  app = TestApp()
  app.connect("127.0.0.1", 7497, 0)
  # define contract for EUR.USD forex pair
+ tickers = [['SPXU', 'STK', 'SMART', 'USD', 'NYSE'],['SPY', 'STK', 'SMART', 'USD', 'NYSE']]
  contract = Contract()
+ for ticker in tickers:
+  print('ticker:'+ticker[0])
+  #contract.symbol = "EUR"
+  #contract.secType = "CASH"
+  #contract.exchange = "IDEALPRO"
+  #contract.currency = "USD"
 
- #contract.symbol = "EUR"
- #contract.secType = "CASH"
- #contract.exchange = "IDEALPRO"
- #contract.currency = "USD"
+  contract.symbol = ticker[0]
+  contract.secType = ticker[1]
+  contract.exchange = ticker[2]
+  contract.currency = ticker[3]
+  contract.primaryExchange = ticker[4]
 
- contract.symbol = 'XLB'
- contract.secType = 'STK'
- contract.exchange = 'SMART'
- contract.currency = 'USD'
- contract.primaryExchange = 'NYSE'
+  #app.reqHistoricalData(1, contract, "", "1 D", "1 min", "MIDPOINT", 0, 1, False,[])
+  #app.reqHistoricalData(1, contract, "", "1 D", "1 min", "ADJUSTED_LAST", 1, 1, False,[])
+  app.reqHistoricalData(1, contract, "", "2 D", "1 min", "TRADES", 1, 1, False, [])
 
- #app.reqHistoricalData(1, contract, "", "1 D", "1 min", "MIDPOINT", 0, 1, False,[])
- #app.reqHistoricalData(1, contract, "", "1 D", "1 min", "ADJUSTED_LAST", 1, 1, False,[])
- app.reqHistoricalData(1, contract, "", "5 D", "1 min", "TRADES", 1, 1, False, [])
-
- app.run()
+  app.run()
 
 if __name__ == "__main__":
  main()

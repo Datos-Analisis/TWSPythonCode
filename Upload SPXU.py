@@ -1,5 +1,3 @@
-directorio = 'C:/Users/Julio/PycharmProjects/TWSPythonCode'
-
 import os
 
 from pydrive2.auth import GoogleAuth
@@ -8,6 +6,11 @@ from pydrive2.drive import GoogleDrive
 import time
 from datetime import date
 from timeit import default_timer as timer
+
+directorio = 'C:/Users/Julio/PycharmProjects/TWSPythonCode'
+
+
+
 
 directorio_credenciales = 'credentials_module.json'
 
@@ -198,9 +201,10 @@ if __name__ == "__main__":
 
     today = date.today()
     d1 = today.strftime("%d-%m-%Y")
-    archivo = f"{directorio}/XLB.csv"
-    nombre_nuevo = f"{directorio}/XLB {d1}.csv"
+    archivo = f"{directorio}/SPXU.csv"
+    nombre_nuevo = f"{directorio}/SPXU {d1}.csv"
     os.rename(archivo, nombre_nuevo)
     subir_archivo(nombre_nuevo, id_folder)
 
     print('Listo')
+

@@ -1,0 +1,56 @@
+from ib_insync import *
+import pandas as pd
+import datetime
+
+'''
+things you will need: python3, TWS logged in and running.
+pip packages: pip install wsgiref boto
+
+About: This script downloads multiple historical futures contracts.
+
+Usage: Fill out the information in the two variables below. You can get this information from TWS.
+       TWS>Enter Symbol>Click Futures>Click "More & Multiple">Click "Show Historical Contracts"
+
+Contracts structure: ['Symbol','TWS Contract Name','Contract Month','Last Trade Date','First Trade Date']
+                     We are building an array of array's. So be sure to separate each contract within brackets with a comma, see example below.
+
+'''
+
+downloadFolder = 'C:\\Users\\Julio\\PycharmProjects\\TWSPythonCode'
+contracts = [['SPXU','SMART','202205','2022-05-25','2022-05-24'],['SPXU','SMART','201912','2022-05-25','2022-05-24']]
+
+##### Don't edit below unless you know what you're doing)  ######
+
+ib = IB()
+ib.connect('127.0.0.1', 7496, clientId=1)
+
+def getData(contracts):
+    for contract in contracts:
+        symbol = contract[0]
+        fileName = contract[1]
+        contractMonth = contract[2]
+        end = datetime.datetime.strptime(contract[3], '%Y-%m-%d')
+        start = datetime.datetime.strptime(contract[4], '%Y-%m-%d')
+
+        print('Contract: '+ fileName + ' ' + contractMonth)
+        print('Downloading...')
+
+        barsList = []
+
+        contract = Contract(secType='STK',symbol=symbol, lastTradeDateOrContractMonth=contractMonth, exchange='NYSE', currency='USD', includeExpired=True)
+
+        dt = end
+        while dt > start:
+            bars = ib.reqHistoricalData(contract, endDateTime=dt, durationStr='2 D', barSizeSetting='1 min', whatToShow='TRADES', useRTH=False) #,timeout=0
+            barsList.append(bars)
+            print(fileName + ' ' + dt.strftime('%m/%d/%Y') + ' Done.')
+            dt = bars[0].date
+
+        allBars = [b for bars in reversed(barsList) for b in bars]
+        df = util.df(allBars)
+        gfg_csv_data = df.to_csv(downloadFolder+fileName+'.csv', index = True)
+
+        print('Done.')
+    print('All contracts downloaded :^)')
+
+getData(contracts)

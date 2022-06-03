@@ -7,7 +7,9 @@ import time
 from datetime import date
 from timeit import default_timer as timer
 
-directorio = 'C:/Users/Workstation 4/PycharmProjects/TWSPythonCode'
+directorio = 'C:/Users/Julio/PycharmProjects/TWSPythonCode'
+
+
 
 
 directorio_credenciales = 'credentials_module.json'

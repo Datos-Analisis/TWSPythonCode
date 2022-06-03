@@ -1,10 +1,8 @@
-directorio = 'C:/Users/Workstation 4/PycharmProjects/TWSPythonCode'
+directorio = 'C:/Users/Julio/PycharmProjects/TWSPythonCode'
 
 import os
-
 from pydrive2.auth import GoogleAuth
 from pydrive2.drive import GoogleDrive
-
 import time
 from datetime import date
 from timeit import default_timer as timer
@@ -199,7 +197,7 @@ if __name__ == "__main__":
     today = date.today()
     d1 = today.strftime("%d-%m-%Y")
     archivo = f"{directorio}/SPY.csv"
-    nombre_nuevo = f"{directorio}/SPY TeamViewer {d1}.csv"
+    nombre_nuevo = f"{directorio}/SPY {d1}.csv"
     os.rename(archivo, nombre_nuevo)
     subir_archivo(nombre_nuevo, id_folder)
 
